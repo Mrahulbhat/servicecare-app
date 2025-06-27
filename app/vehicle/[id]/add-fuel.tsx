@@ -2,17 +2,17 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'; // ✅ Import
 import Toast from 'react-native-toast-message';
 import { axiosInstance } from '../../../lib/axios';
 import { useFuelStore } from '../../../store/useFuelStore';
@@ -75,88 +75,90 @@ export default function AddFuelScreen() {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <SafeAreaView style={styles.centered}>
         <ActivityIndicator size="large" color="#f97316" />
         <Text style={styles.loadingText}>Loading vehicle...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
-      <ScrollView contentContainerStyle={styles.container}>
-        {vehicle?.image && (
-          <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} />
-        )}
-        <Text style={styles.vehicleName}>{vehicle?.name}</Text>
-
-        <Text style={styles.label}>Fuel Date</Text>
-        <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={styles.inputText}>{date.toDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false);
-              if (selectedDate) setDate(selectedDate);
-            }}
-          />
-        )}
-
-        <Text style={styles.label}>Fuel Amount (Rs)</Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          value={amount}
-          onChangeText={setAmount}
-          placeholder="1000"
-          placeholderTextColor="#888"
-        />
-
-        <Text style={styles.label}>Odometer Reading (km)</Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          value={km}
-          onChangeText={setKm}
-          placeholder="14000"
-          placeholderTextColor="#888"
-        />
-
-        <Text style={styles.label}>Description / Notes</Text>
-        <TextInput
-          style={[styles.input, { height: 100, textAlignVertical: 'top' }]}
-          multiline
-          value={desc}
-          onChangeText={setDesc}
-          placeholder="Filled at Indian Oil, Full tank..."
-          placeholderTextColor="#888"
-        />
-
-        <TouchableOpacity
-          style={[styles.button, submitting && { backgroundColor: '#555' }]}
-          onPress={handleSubmit}
-          disabled={submitting}
-        >
-          {submitting ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Add Fuel Record</Text>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#0a0a0a' }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView contentContainerStyle={styles.container}>
+          {vehicle?.image && (
+            <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} />
           )}
-        </TouchableOpacity>
+          <Text style={styles.vehicleName}>{vehicle?.name}</Text>
 
-        <Toast />
-      </ScrollView>
-    </KeyboardAvoidingView>
+          <Text style={styles.label}>Fuel Date</Text>
+          <TouchableOpacity
+            style={styles.input}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={styles.inputText}>{date.toDateString()}</Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                if (selectedDate) setDate(selectedDate);
+              }}
+            />
+          )}
+
+          <Text style={styles.label}>Fuel Amount (Rs)</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            value={amount}
+            onChangeText={setAmount}
+            placeholder="1000"
+            placeholderTextColor="#888"
+          />
+
+          <Text style={styles.label}>Odometer Reading (km)</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            value={km}
+            onChangeText={setKm}
+            placeholder="14000"
+            placeholderTextColor="#888"
+          />
+
+          <Text style={styles.label}>Description / Notes</Text>
+          <TextInput
+            style={[styles.input, { height: 100, textAlignVertical: 'top' }]}
+            multiline
+            value={desc}
+            onChangeText={setDesc}
+            placeholder="Filled at Indian Oil, Full tank..."
+            placeholderTextColor="#888"
+          />
+
+          <TouchableOpacity
+            style={[styles.button, submitting && { backgroundColor: '#555' }]}
+            onPress={handleSubmit}
+            disabled={submitting}
+          >
+            {submitting ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Add Fuel Record</Text>
+            )}
+          </TouchableOpacity>
+
+          <Toast />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

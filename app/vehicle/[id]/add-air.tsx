@@ -1,21 +1,20 @@
-// File: app/vehicle/[id]/add-air.tsx (React Native version using Expo)
-
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Image,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context"; // ✅ added SafeAreaView
 import Toast from "react-native-toast-message";
 import { axiosInstance } from "../../../lib/axios";
 import { useAirStore } from "../../../store/useAirStore";
@@ -81,80 +80,82 @@ export default function AddAirScreen() {
 
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <SafeAreaView style={styles.centered}>
         <ActivityIndicator size="large" color="#f97316" />
         <Text style={{ color: "white", marginTop: 10 }}>Loading vehicle...</Text>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <KeyboardAvoidingView
-      style={styles.safe}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
-    >
-      <ScrollView contentContainerStyle={styles.container}>
-        {vehicle?.image && (
-          <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} />
-        )}
-        <Text style={styles.vehicleName}>{vehicle?.name}</Text>
-
-        <Text style={styles.label}>Checkup Date</Text>
-        <TouchableOpacity
-          style={styles.input}
-          onPress={() => setShowDatePicker(true)}
-        >
-          <Text style={{ color: "white" }}>📅 {date.toDateString()}</Text>
-        </TouchableOpacity>
-        {showDatePicker && (
-          <DateTimePicker
-            value={date}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDate) => {
-              setShowDatePicker(false);
-              selectedDate && setDate(selectedDate);
-            }}
-          />
-        )}
-
-        <Text style={styles.label}>Odometer Reading (KM)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="14000"
-          placeholderTextColor="#666"
-          keyboardType="numeric"
-          value={km}
-          onChangeText={setKm}
-        />
-
-        <Text style={styles.label}>Air Type</Text>
-        <View style={styles.pickerContainer}>
-          <Picker
-            selectedValue={type}
-            onValueChange={(val) => setType(val)}
-            dropdownIconColor="#f97316"
-            style={{ color: "#fff" }}
-          >
-            <Picker.Item label="Normal Air" value="Normal air" />
-            <Picker.Item label="Nitrogen" value="Nitrogen" />
-          </Picker>
-        </View>
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={handleSubmit}
-          disabled={submitting}
-        >
-          {submitting ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>💨 Add Air Record</Text>
+    <SafeAreaView style={styles.safe}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
+      >
+        <ScrollView contentContainerStyle={styles.container}>
+          {vehicle?.image && (
+            <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} />
           )}
-        </TouchableOpacity>
-      </ScrollView>
+          <Text style={styles.vehicleName}>{vehicle?.name}</Text>
+
+          <Text style={styles.label}>Checkup Date</Text>
+          <TouchableOpacity
+            style={styles.input}
+            onPress={() => setShowDatePicker(true)}
+          >
+            <Text style={{ color: "white" }}>📅 {date.toDateString()}</Text>
+          </TouchableOpacity>
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDate) => {
+                setShowDatePicker(false);
+                selectedDate && setDate(selectedDate);
+              }}
+            />
+          )}
+
+          <Text style={styles.label}>Odometer Reading (KM)</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="14000"
+            placeholderTextColor="#666"
+            keyboardType="numeric"
+            value={km}
+            onChangeText={setKm}
+          />
+
+          <Text style={styles.label}>Air Type</Text>
+          <View style={styles.pickerContainer}>
+            <Picker
+              selectedValue={type}
+              onValueChange={(val) => setType(val)}
+              dropdownIconColor="#f97316"
+              style={{ color: "#fff" }}
+            >
+              <Picker.Item label="Normal Air" value="Normal air" />
+              <Picker.Item label="Nitrogen" value="Nitrogen" />
+            </Picker>
+          </View>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={handleSubmit}
+            disabled={submitting}
+          >
+            {submitting ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>💨 Add Air Record</Text>
+            )}
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
       <Toast />
-    </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 

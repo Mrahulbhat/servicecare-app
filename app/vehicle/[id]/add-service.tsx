@@ -17,6 +17,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Toast from "react-native-toast-message";
 import { axiosInstance } from "../../../lib/axios";
 import { useServiceStore } from "../../../store/useServiceStore";
@@ -90,8 +91,8 @@ export default function AddServiceScreen() {
         date: date.toISOString(),
         nextServiceDueDate: nextServiceDate?.toISOString(),
         desc,
-        amount:Number(amount),
-        km:Number(km),
+        amount: Number(amount),
+        km: Number(km),
       });
 
       Toast.show({
@@ -118,17 +119,17 @@ export default function AddServiceScreen() {
 
   if (loading) {
     return (
-      <View style={styles.safe}>
+      <SafeAreaView style={styles.safe}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#f97316" />
           <Text style={styles.loadingText}>Loading vehicle...</Text>
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 
   return (
-    <View style={styles.safe}>
+    <SafeAreaView style={styles.safe}>
       <KeyboardAvoidingView
         style={styles.keyboardAvoid}
         behavior={Platform.OS === "ios" ? "padding" : undefined}
@@ -144,18 +145,8 @@ export default function AddServiceScreen() {
             <Image source={{ uri: vehicle.image }} style={styles.vehicleImage} />
           )}
 
-          <Text
-            style={{
-              fontSize: 18,
-              color: "white",
-              textAlign: "center",
-              marginBottom: 16,
-            }}
-          >
-            {vehicle?.name}
-          </Text>
+          <Text style={styles.vehicleName}>{vehicle?.name}</Text>
 
-          {/* Service Type */}
           <Text style={styles.label}>Service Type *</Text>
           <View
             style={[
@@ -182,7 +173,6 @@ export default function AddServiceScreen() {
             <Text style={styles.error}>{errors.serviceType}</Text>
           )}
 
-          {/* Service Date */}
           <Text style={styles.label}>Service Date</Text>
           <TouchableOpacity
             style={styles.input}
@@ -202,7 +192,6 @@ export default function AddServiceScreen() {
             />
           )}
 
-          {/* Amount */}
           <Text style={styles.label}>Amount (₹)</Text>
           <TextInput
             style={[styles.input, errors.amount && styles.errorBorder]}
@@ -217,7 +206,6 @@ export default function AddServiceScreen() {
           />
           {errors.amount && <Text style={styles.error}>{errors.amount}</Text>}
 
-          {/* KM */}
           <Text style={styles.label}>Kilometers (KM)</Text>
           <TextInput
             style={[styles.input, errors.km && styles.errorBorder]}
@@ -232,7 +220,6 @@ export default function AddServiceScreen() {
           />
           {errors.km && <Text style={styles.error}>{errors.km}</Text>}
 
-          {/* Next Service Date */}
           <Text style={styles.label}>Next Service Date</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TouchableOpacity
@@ -269,7 +256,6 @@ export default function AddServiceScreen() {
             <Text style={styles.error}>{errors.nextServiceDate}</Text>
           )}
 
-          {/* Notes */}
           <Text style={styles.label}>Notes (Optional)</Text>
           <TextInput
             style={[styles.input, { height: 100, textAlignVertical: "top" }]}
@@ -280,7 +266,6 @@ export default function AddServiceScreen() {
             onChangeText={setDesc}
           />
 
-          {/* Submit */}
           <TouchableOpacity
             onPress={handleSubmit}
             style={[styles.button, submitting && { backgroundColor: "#555" }]}
@@ -295,7 +280,7 @@ export default function AddServiceScreen() {
         </ScrollView>
       </KeyboardAvoidingView>
       <Toast />
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -336,6 +321,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginBottom: 20,
     backgroundColor: "#1a1a1a",
+  },
+  vehicleName: {
+    fontSize: 18,
+    color: "white",
+    textAlign: "center",
+    marginBottom: 16,
   },
   label: {
     color: "#ccc",
