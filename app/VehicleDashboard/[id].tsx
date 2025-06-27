@@ -222,7 +222,8 @@ const VehicleDashboard = () => {
             title="Add Service"
             icon={<Wrench />}
             color="#3b82f6"
-            onPress={() => router.push(`../vehicle/[id]/add-service`)}
+            onPress={() => router.push(`/vehicle/${id}/add-service`)}
+
           />
           <ActionButton
             title="Add Fuel"
@@ -322,13 +323,13 @@ const styles = StyleSheet.create({
   },
   statusSection: {
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 40,
   },
   sectionTitle: {
     color: '#f8fafc',
     fontSize: 18,
     fontWeight: '700',
-    marginBottom: 12,
+    marginBottom: 20,
   },
   statusGrid: {
     flexDirection: 'row',
@@ -352,7 +353,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
   },
   statusInfo: {
     alignItems: 'center',
@@ -377,8 +378,7 @@ const styles = StyleSheet.create({
   },
   actionsSection: {
     paddingHorizontal: 20,
-    paddingTop: 20,
-    paddingBottom: 40,
+    paddingTop: 30,
   },
   actionsGrid: {
     flexDirection: 'row',
